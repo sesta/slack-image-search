@@ -22,14 +22,27 @@ function doPost(e) {
 }
 
 function getTopImageUrl(query) {
-  var API_KEY = PropertiesService.getScriptProperties().getProperty('API_KEY');
-  var SEARCH_ENGINE_ID = PropertiesService.getScriptProperties().getProperty('SEARCH_ENGINE_ID');
-
-  var url = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + SEARCH_ENGINE_ID + '&num=10&searchType=image&q=' + encodeURI(query);
+  var url = buildApiUrl(query)
   var response = UrlFetchApp.fetch(url);
   var json = response.getContentText();
   var object = Utilities.jsonParse(json);
   return object.items[Math.floor(Math.random() * Math.max(10, object.items.length))].link;
+}
+
+function buildApiUrl(query) {
+  var params = {
+    key: PropertiesService.getScriptProperties().getProperty('API_KEY'),
+    cx: PropertiesService.getScriptProperties().getProperty('SEARCH_ENGINE_ID'),
+    q: query,
+    num: 10,
+    searchType: 'image',
+  };
+
+  var paramStrings = []
+  Object.keys(params).forEach(function (key) {
+    return paramStrings.push(key + '=' + encodeURIComponent(params[key]));
+  });
+  return 'https://www.googleapis.com/customsearch/v1?' + paramStrings.join('&')
 }
 
 
