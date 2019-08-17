@@ -1,10 +1,16 @@
 function doPost(e) {
   var text = 'たぶん上限に達しました。1日100回までしか検索できないんです。'
-  try {
-    text = getTopImageUrl(e.parameter.text)
-  } catch(error) {
-    Logger.log('エラーが発生しました')
-    Logger.log(error)
+  var query = e.parameter.text
+
+  if (query === '') {
+    text = "検索したい言葉を指定してください。 `/image 検索したい言葉`"
+  } else {
+    try {
+      text = getTopImageUrl(e.parameter.text)
+    } catch(error) {
+      Logger.log('エラーが発生しました')
+      Logger.log(error)
+    }
   }
 
   var out = ContentService.createTextOutput();
