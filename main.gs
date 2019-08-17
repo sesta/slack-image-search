@@ -1,26 +1,34 @@
 function doPost(e) {
-  var text = 'たぶん上限に達しました。1日100回までしか検索できないんです。'
   var query = e.parameter.text
-
-  if (query === '') {
-    text = "検索したい言葉を指定してください。 `/image 検索したい言葉`"
-  } else {
-    try {
-      text = getTopImageUrl(e.parameter.text)
-    } catch(error) {
-      Logger.log('エラーが発生しました')
-      Logger.log(error)
-    }
-  }
+  var response = getResponse(query)
 
   var out = ContentService.createTextOutput();
   out.setMimeType(ContentService.MimeType.JSON);
-  out.setContent(JSON.stringify({
-    text: text,
-    response_type: 'in_channel',
-  }));
+  out.setContent(JSON.stringify(response));
 
   return out
+}
+
+function getResponse(query) {
+  if (query === '') {
+    return {
+      text: "検索したい言葉を指定してください。 `/image 検索したい言葉`",
+    };
+  }
+
+  try {
+    return {
+      text: getTopImageUrl(query),
+      response_type: 'in_channel',
+    }
+  } catch(error) {
+    Logger.log('エラーが発生しました')
+    Logger.log(error)
+  }
+
+  return {
+    text: 'たぶん上限に達しました。1日100回までしか検索できないんです。',
+  }
 }
 
 function getTopImageUrl(query) {
