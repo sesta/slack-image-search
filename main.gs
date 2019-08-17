@@ -18,7 +18,7 @@ function getResponse(query) {
 
   try {
     return {
-      text: getTopImageUrl(query),
+      text: searchImage(query),
       response_type: 'in_channel',
     }
   } catch(error) {
@@ -31,7 +31,7 @@ function getResponse(query) {
   }
 }
 
-function getTopImageUrl(query) {
+function searchImage(query) {
   var url = buildApiUrl(query)
   var response = UrlFetchApp.fetch(url);
 

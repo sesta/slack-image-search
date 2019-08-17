@@ -1,4 +1,4 @@
 function apiTest() {
-  Logger.log(getTopImageUrl('test'))
+  Logger.log(searchImage('test'))
 }
 
