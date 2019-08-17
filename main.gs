@@ -20,9 +20,11 @@ function doPost(e) {
 function getTopImageUrl(query) {
   var url = buildApiUrl(query)
   var response = UrlFetchApp.fetch(url);
+
   var json = response.getContentText();
   var object = Utilities.jsonParse(json);
-  return object.items[Math.floor(Math.random() * Math.max(10, object.items.length))].link;
+  var imageIndex = Math.floor(Math.random() * Math.max(10, object.items.length))
+  return object.items[imageIndex].link;
 }
 
 function buildApiUrl(query) {
