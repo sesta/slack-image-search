@@ -21,10 +21,10 @@ function getTopImageUrl(query) {
   var url = buildApiUrl(query)
   var response = UrlFetchApp.fetch(url);
 
-  var json = response.getContentText();
-  var object = Utilities.jsonParse(json);
-  var imageIndex = Math.floor(Math.random() * Math.max(10, object.items.length))
-  return object.items[imageIndex].link;
+  var content = response.getContentText();
+  var json = JSON.parse(content);
+  var imageIndex = Math.floor(Math.random() * Math.max(10, json.items.length))
+  return json.items[imageIndex].link;
 }
 
 function buildApiUrl(query) {
@@ -42,5 +42,4 @@ function buildApiUrl(query) {
   });
   return 'https://www.googleapis.com/customsearch/v1?' + paramStrings.join('&')
 }
-
 
