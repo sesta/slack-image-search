@@ -1,7 +1,3 @@
-function apiTest() {
-  Logger.log(getTopImageUrl('test'))
-}
-
 function doPost(e) {
   var text = 'たぶん上限に達しました。1日100回までしか検索できないんです。'
   try {
