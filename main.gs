@@ -38,7 +38,7 @@ function searchImage(query, type) {
 
   var content = response.getContentText();
   var json = JSON.parse(content);
-  var imageIndex = Math.floor(Math.random() * Math.max(10, json.items.length))
+  var imageIndex = Math.floor(Math.random() * Math.max(5, json.items.length))
   return json.items[imageIndex].link;
 }
 
@@ -47,7 +47,7 @@ function buildApiUrl(query, type) {
     key: PropertiesService.getScriptProperties().getProperty('API_KEY'),
     cx: PropertiesService.getScriptProperties().getProperty('SEARCH_ENGINE_ID'),
     q: query,
-    num: 10,
+    num: 5,
     searchType: 'image',
   };
 
