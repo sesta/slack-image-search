@@ -53,6 +53,7 @@ function buildApiUrl(query, type) {
 
   if (type === 'anime') {
     params.imgType = 'animated';
+    params.imgSize = 'medium';
   }
 
   var paramStrings = []
