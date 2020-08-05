@@ -1,6 +1,7 @@
 function doPost(e) {
   var query = e.parameter.text
-  var response = getResponse(query)
+  var type = e.parameter.type
+  var response = getResponse(query, type)
 
   var out = ContentService.createTextOutput();
   out.setMimeType(ContentService.MimeType.JSON);
@@ -9,7 +10,7 @@ function doPost(e) {
   return out
 }
 
-function getResponse(query) {
+function getResponse(query, type) {
   if (query === '') {
     return {
       text: "検索したい言葉を指定してください。 `/image 検索したい言葉`",
@@ -18,7 +19,7 @@ function getResponse(query) {
 
   try {
     return {
-      text: searchImage(query),
+      text: searchImage(query, type),
       response_type: 'in_channel',
     }
   } catch(error) {
@@ -31,8 +32,8 @@ function getResponse(query) {
   }
 }
 
-function searchImage(query) {
-  var url = buildApiUrl(query)
+function searchImage(query, type) {
+  var url = buildApiUrl(query, type)
   var response = UrlFetchApp.fetch(url);
 
   var content = response.getContentText();
@@ -41,7 +42,7 @@ function searchImage(query) {
   return json.items[imageIndex].link;
 }
 
-function buildApiUrl(query) {
+function buildApiUrl(query, type) {
   var params = {
     key: PropertiesService.getScriptProperties().getProperty('API_KEY'),
     cx: PropertiesService.getScriptProperties().getProperty('SEARCH_ENGINE_ID'),
@@ -49,6 +50,10 @@ function buildApiUrl(query) {
     num: 10,
     searchType: 'image',
   };
+
+  if (type === 'anime') {
+    params.imgType = 'animated';
+  }
 
   var paramStrings = []
   Object.keys(params).forEach(function (key) {
